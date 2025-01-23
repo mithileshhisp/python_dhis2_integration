@@ -1,7 +1,7 @@
 # python_dhis2_integration
 Python based data integration from dhis2 and other application and add in schedular ( cron job )
 
-# hiv tracker push missing event datavalue through schedular
+# timor push tracker datavalue (from program-indicators ) to aggregated dataset through schedular
 
 This Python script facilitates the push from tracker-data-value (program indicators ) to aggregated dataset .
 
