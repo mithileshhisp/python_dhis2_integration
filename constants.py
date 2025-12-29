@@ -22,7 +22,10 @@ LOG_FILE_DELETE_EVENT_XLSX = datetime.now().strftime("%Y-%m-%d") + "_tei_delete_
 
 LOG_FILE_EVENT_POST = datetime.now().strftime("%Y-%m-%d") + "_event_post.txt"
 LOG_FILE_EVENT_POST_XLSX = datetime.now().strftime("%Y-%m-%d") + "_event_post_xlsx.txt"
-LOG_FILE_ORGUNIT_POST = datetime.now().strftime("%Y-%m-%d") + "_organisationUnits_post.txt"
+#LOG_FILE_ORGUNIT_POST = datetime.now().strftime("%Y-%m-%d") + "_organisationUnits_post.txt"
+
+LOG_FILE_ORGUNIT_POST = datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + "_organisationUnits_post.log"
+
 LOG_FILE_TEI_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_tei_error_log.txt"
 LOG_FILE_TEI_POST = datetime.now().strftime("%Y-%m-%d") + "_tei_post.txt"
 LOG_FILE_TEI_ENROLLMENT_POST = datetime.now().strftime("%Y-%m-%d") + "_tei_enrollment_post.txt"
@@ -33,6 +36,10 @@ LOG_FILE_PROGRAMRULE_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_program
 
 LOG_FILE_PROGRAMRULE_VARIABLE_POST = datetime.now().strftime("%Y-%m-%d") + "_programrule_variable_post.txt"
 LOG_FILE_PROGRAMRULE_VARIABLE_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_programrule_variable_error_log.txt"
+
+
+LOG_FILE_PROGRAMRULE_ACTION_POST = datetime.now().strftime("%Y-%m-%d") + "_programrule_action_post.txt"
+LOG_FILE_PROGRAMRULE_ACTION_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_programrule_action_error_log.txt"
 
 LOG_FILE_OPTIONS_POST = datetime.now().strftime("%Y-%m-%d") + "_options_post.txt"
 LOG_FILE_OPTION_GRP_MEMBERS_PUT = datetime.now().strftime("%Y-%m-%d") + "_option_grp_member_put.txt"

@@ -7,19 +7,26 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
-
+dhis2_username = "******"
+dhis2_password = "******"
 
 from constants import LOG_FILE_OPTION_GRP_MEMBERS_PUT, LOG_FILE_EVENT_ERROR_LOG
 
-dhis2_username = "*****"
-dhis2_password = "*****"
 # DHIS2 API credentials and URL
-DHIS2_API_GET_URL = "****/api/"
+
+DHIS2_API_GET_URL = "https://hmistraining.mm.dhis2.net/train/api/"
 DHIS2_AUTH_GET = ("*****", "*****")
 
+dhis2_username = "*****"
+dhis2_password = "*****"
 
-DHIS2_API_POST_URL = "****/api/"
-DHIS2_AUTH_POST = ("****", "*****")
+#DHIS2_API_POST_URL = "https://links.hispindia.org/nepal_climate/api/"
+DHIS2_API_POST_URL =  "https://hmistraining.mm.dhis2.net/train/api/"
+
+#DHIS2_AUTH_POST = ("*****", "*****")
+DHIS2_AUTH_POST = ("*****", "******")
+
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session_get = requests.Session()
@@ -90,12 +97,14 @@ def push_option_grp_member_in_dhis2(session_post, option_group_response_data, op
         resp_msg=response.text
         ind=resp_msg.find('conflict')
         
-        print(f"Failed to create Option. for option_group_uid, : {option_group_uid}, and option_group_name: {option_group_name}")
-        logging.error(f"Failed to create Option for option_group_uid, : {option_group_uid}, and option_group_name: {option_group_name}")
+        print(f"Failed to create Option. for option_group_uid, : {option_group_uid}, and option_group_name: {option_group_name}, resp_msg: {resp_msg} ")
+        logging.error(f"Failed to create Option for option_group_uid, : {option_group_uid}, and option_group_name: {option_group_name}, resp_msg: {resp_msg}")
 
 
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'
-option_grp_member_post_excel_file_path = 'Option_Group_Import_Village.xlsx'
+#option_grp_member_post_excel_file_path = 'Option_Group_members_Import_Village.xlsx'
+option_grp_member_post_excel_file_path = 'Option_Group_members_Import_Ward.xlsx'
+
 
 print( f"file_name . { option_grp_member_post_excel_file_path }" )
 logging.info(f"file_name . { option_grp_member_post_excel_file_path }")

@@ -1,8 +1,5 @@
 #https://pypi.org/project/nepali-calendar-utils/
 #pip install nepali-calendar-utils
-
-
-
 #pip install nepali
 #pip install nepali-datetime
 import nepali

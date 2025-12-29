@@ -7,6 +7,8 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
+import os
+
 dhis2_username = "*****"
 dhis2_password = "******"
 
@@ -14,13 +16,23 @@ from constants import LOG_FILE_ORGUNIT_POST, LOG_FILE_EVENT_ERROR_LOG
 
 # DHIS2 API credentials and URL
 
-DHIS2_API_GET_URL = "****/api/"
-DHIS2_AUTH_GET = ("*****", "*****")
+#DHIS2_API_GET_URL = "https://hmis.moh.gov.mm/events/api/"
+#DHIS2_AUTH_GET = ("******", "*****")
 
+DHIS2_API_GET_URL =  "https://mbdr.mm.dhis2.net/dhis/api/"
+DHIS2_AUTH_GET = ("*******", "*******")
 
-DHIS2_API_POST_URL = "****/api/"
-DHIS2_AUTH_POST = ("****", "*****")
+dhis2_username = "*******"
+dhis2_password = "*******"
 
+#DHIS2_API_POST_URL = "https://links.hispindia.org/nepal_climate/api/"
+#DHIS2_API_POST_URL =  "https://mbdr.mm.dhis2.net/dhis/api/"
+#DHIS2_AUTH_POST = ("*******", "*******")
+
+DHIS2_API_POST_URL =  "http://127.0.0.1:8092/dhis242/api/"
+DHIS2_AUTH_POST = ("*******", "*******")
+
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session_get = requests.Session()
@@ -29,7 +41,16 @@ session_get.auth = DHIS2_AUTH_GET
 session_post = requests.Session()
 session_post.auth = DHIS2_AUTH_POST
 
-logging.basicConfig(filename=LOG_FILE_ORGUNIT_POST, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+LOG_DIR = "logs"
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# Create unique log filename
+#log_filename = f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+log_filename = LOG_FILE_ORGUNIT_POST
+#log_filename = f"{LOG_FILE}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+log_path = os.path.join(LOG_DIR, log_filename)
+
+logging.basicConfig(filename=log_path, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 #with requests.Session() as session:
@@ -98,13 +119,14 @@ def push_orgunit_in_dhis2(session_post, orgunit_payload, orgunit_uid, row ):
 
 
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'
-orgunit_to_orgunit_post_excel_file_path = 'orgunit_to_orgunit_post.xlsx'
+#orgunit_to_orgunit_post_excel_file_path = 'orgunit_to_orgunit_post.xlsx'
+orgunit_to_orgunit_post_excel_file_path = 'orgunit_to_orgunit_post_myanmar.xlsx'
 
 print( f"file_name . { orgunit_to_orgunit_post_excel_file_path }" )
 logging.info(f"file_name . { orgunit_to_orgunit_post_excel_file_path }")
 
 
-with ThreadPoolExecutor(max_workers=10) as executor:
+with ThreadPoolExecutor(max_workers=1) as executor:
     # Create a session object for persistent connection
     orgunit_list = pd.read_excel(orgunit_to_orgunit_post_excel_file_path)
     print( f"length of orgunit_list. { len(orgunit_list) }" )
@@ -116,7 +138,9 @@ with ThreadPoolExecutor(max_workers=10) as executor:
 
         if orgunit_response_data:
             #orgunit_payload = orgunit_response_data
+            orgUnit_post_payload = orgunit_response_data
 
+            '''
             orgUnit_post_payload = {
                 "id": orgunit_response_data.get('id'),
                 "name": orgunit_response_data.get('name'),
@@ -129,6 +153,7 @@ with ThreadPoolExecutor(max_workers=10) as executor:
                 "openingDate": orgunit_response_data.get('openingDate'),
                 "geometry": orgunit_response_data.get('geometry')
             }
+            '''
             #print(orgUnit_post_payload)
             executor.submit( push_orgunit_in_dhis2, session_post, orgUnit_post_payload, orgunitRow['orgunit_uid'], index+1 )
         

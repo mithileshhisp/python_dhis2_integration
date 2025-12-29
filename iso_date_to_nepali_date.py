@@ -154,6 +154,12 @@ def get_bs_month_start_end(bs_year, bs_month):
 start, end = get_bs_month_start_end(nepali_current_year, nepali_current_month_number)
 #start, end = get_bs_month_start_end(2081, 1)
 
+
+#start, end = get_bs_month_start_end(2082, 10) ## magh
+#start, end = get_bs_month_start_end(2082, 11) ## fagun
+#start, end = get_bs_month_start_end(2082, 12) ## chaitra
+#start, end = get_bs_month_start_end(2083, 1) ## Baisakh
+
 print("Start BS:", start)
 print("End BS:", end)
 print("Start AD:", start.to_datetime_date())
