@@ -5,6 +5,10 @@ from datetime import datetime
 LOG_FILE_ENROLLMENT = datetime.now().strftime("%Y-%m-%d") + "_enrollment.txt"
 LOG_FILE_EVENT = datetime.now().strftime("%Y-%m-%d") + "_event.txt"
 LOG_FILE_DATA_VALUE_SET = datetime.now().strftime("%Y-%m-%d") + "_dataValueSet.txt"
+
+LOG_FILE_DATA_VALUE_SET_DELETE = datetime.now().strftime("%Y-%m-%d") + "_dataValueSetDelete.txt"
+
+
 LOG_FILE_DATA_VALUE_SET_LAST_SYNC = datetime.now().strftime("%Y-%m-%d") + "_dataValueSet_last_sync.txt"
 LOG_FILE_EVENT_DATA_VALUE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEventDataValue.txt"
 LOG_FILE_EVENT_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_event_error_log.txt"
@@ -18,7 +22,7 @@ LOG_FILE_DELETE_TEI_ERROR_LOG_XLSX = datetime.now().strftime("%Y-%m-%d") + "_tei
 LOG_FILE_DELETE_TEI_XLSX = datetime.now().strftime("%Y-%m-%d") + "_tei_delete_xlsx.txt"
 
 LOG_FILE_DELETE_EVENT_ERROR_LOG_XLSX = datetime.now().strftime("%Y-%m-%d") + "_tei_delete_error_log_xlsx.txt"
-LOG_FILE_DELETE_EVENT_XLSX = datetime.now().strftime("%Y-%m-%d") + "_tei_delete_xlsx.txt"
+LOG_FILE_DELETE_EVENT_XLSX = datetime.now().strftime("%Y-%m-%d") + "_event_delete_xlsx.txt"
 
 LOG_FILE_EVENT_POST = datetime.now().strftime("%Y-%m-%d") + "_event_post.txt"
 LOG_FILE_EVENT_POST_XLSX = datetime.now().strftime("%Y-%m-%d") + "_event_post_xlsx.txt"
@@ -43,6 +47,13 @@ LOG_FILE_PROGRAMRULE_ACTION_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_
 
 LOG_FILE_OPTIONS_POST = datetime.now().strftime("%Y-%m-%d") + "_options_post.txt"
 LOG_FILE_OPTION_GRP_MEMBERS_PUT = datetime.now().strftime("%Y-%m-%d") + "_option_grp_member_put.txt"
+
+LOG_FILE_OPTIONS_TRANSLATION_POST = datetime.now().strftime("%Y-%m-%d") + "_options_translation_post.txt"
+
+LOG_FILE_PROGRAM_INDICATORS_POST = datetime.now().strftime("%Y-%m-%d") + "_program_indicators_post.txt"
+
+LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateTEIAttributeValue.txt"
+LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_tei_update_error_log.txt"
 
 
 

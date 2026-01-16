@@ -8,8 +8,11 @@ import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
 
-dhis2_username = "*****"
-dhis2_password = "*****"
+import urllib3 ## for disable warning of Certificate
+urllib3.disable_warnings() ## for disable warning of Certificate
+
+dhis2_username = "****"
+dhis2_password = "****"
 
 from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG
 
@@ -18,10 +21,11 @@ from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUT
 
 # DHIS2 API credentials and URL
 
-DHIS2_API_URL = "*****/api/"
-DHIS2_AUTH = ("****", "****")
+#DHIS2_API_URL = "https://hmis.moh.gov.mm/events/api/"
+DHIS2_API_URL = "https://tracker.hivaids.gov.np/save-child-2.27/api/"
+DHIS2_AUTH = ("*****", "*****")
 
-
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session = requests.Session()
@@ -157,7 +161,7 @@ def update_tei_attributeValue_in_dhis2(session, tei_updateAttributeValue_payload
         logging.error(f"Failed to update TEI attributeValue . tei_uid : {tei_uid} . row : {row_no} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
 
 
-tei_attributeValue_update_excel_file_path = 'updateTEIAttributeValue_myanmar_event.xlsx'
+tei_attributeValue_update_excel_file_path = 'updateTEIAttributeValue.xlsx'
 print( f"file_name . { tei_attributeValue_update_excel_file_path }" )
 logging.info(f"file_name . { tei_attributeValue_update_excel_file_path }")
 
@@ -175,13 +179,14 @@ with ThreadPoolExecutor(max_workers=10) as executor:
         #print( f"teiRow. {teiRow['tei']} {teiRow['program']}, {str(teiRow['attributeValue'])} " )
         tei_response_data = get_tei_details( session, teiRow['tei'], teiRow['program']  )
 
-        tempTEIArributeValue = to_String(teiRow['attributeValue'].split(':')[1])
+        #tempTEIArributeValue = to_String(teiRow['attributeValue'].split(':')[1])
+        tempTEIArributeValue = to_String(teiRow['attributeValue'])
 
         if tei_response_data:
             tempTeiAttributeValues = []
             tempEventDataValues = tei_response_data.get('attributes',[])
             teiAttributeValue = {
-                "attribute": "P3Spi0kT92n",
+                "attribute": teiRow['teiAttribute'],
                 "value": tempTEIArributeValue
             }
            
