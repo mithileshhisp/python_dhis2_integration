@@ -15,10 +15,10 @@ from constants import LOG_FILE_DELETE_EVENT_XLSX, LOG_FILE_DELETE_EVENT_ERROR_LO
 # DHIS2 API credentials and URL
 
 DHIS2_API_GET_URL = "https://bpr.ippf.org/api/"
-DHIS2_AUTH_GET = ("*****", "*****")
+DHIS2_AUTH_GET = ("admin", "district")
 
-dhis2_username = "****"
-dhis2_password = "****"
+dhis2_username = "*****"
+dhis2_password = "*****"
 
 #DHIS2_API_POST_URL = "https://hhs.drukhmis.gov.bt/bhutan_hhs/api/"
 #DHIS2_AUTH_POST = ("*****", "*****")

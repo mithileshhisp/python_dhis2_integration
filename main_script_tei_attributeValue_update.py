@@ -11,8 +11,8 @@ from requests.auth import HTTPBasicAuth
 import urllib3 ## for disable warning of Certificate
 urllib3.disable_warnings() ## for disable warning of Certificate
 
-dhis2_username = "****"
-dhis2_password = "****"
+dhis2_username = "*****"
+dhis2_password = "*****"
 
 from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG
 
@@ -97,7 +97,7 @@ def int_to_float(val):
         return float(val)
 
 
-def get_tei_details(session,tei_uid,program_uid):
+def get_tei_details(session, tei_uid, program_uid):
     
     #https://ln4.hispindia.org/timor_dev/api/events.json?orgUnit=Fn51zf6ifbm&ouMode=SELECTED&program=RUqNUsv6WBp&status=ACTIVE&skipPaging=true&filter=alV2b3AtVLw:eq:897
    
@@ -184,7 +184,7 @@ with ThreadPoolExecutor(max_workers=10) as executor:
 
         if tei_response_data:
             tempTeiAttributeValues = []
-            tempEventDataValues = tei_response_data.get('attributes',[])
+            #tempEventDataValues = tei_response_data.get('attributes',[])
             teiAttributeValue = {
                 "attribute": teiRow['teiAttribute'],
                 "value": tempTEIArributeValue

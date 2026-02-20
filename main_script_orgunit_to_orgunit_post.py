@@ -9,7 +9,7 @@ import pandas as pd
 from requests.auth import HTTPBasicAuth
 import os
 
-dhis2_username = "*****"
+dhis2_username = "******"
 dhis2_password = "******"
 
 from constants import LOG_FILE_ORGUNIT_POST, LOG_FILE_EVENT_ERROR_LOG
@@ -19,18 +19,18 @@ from constants import LOG_FILE_ORGUNIT_POST, LOG_FILE_EVENT_ERROR_LOG
 #DHIS2_API_GET_URL = "https://hmis.moh.gov.mm/events/api/"
 #DHIS2_AUTH_GET = ("******", "*****")
 
-DHIS2_API_GET_URL =  "https://mbdr.mm.dhis2.net/dhis/api/"
-DHIS2_AUTH_GET = ("*******", "*******")
+DHIS2_API_GET_URL =  "https://links.hispindia.org/tlllf_mis/api/"
+DHIS2_AUTH_GET = ("******", "*****")
 
-dhis2_username = "*******"
-dhis2_password = "*******"
+dhis2_username = "******"
+dhis2_password = "******"
 
 #DHIS2_API_POST_URL = "https://links.hispindia.org/nepal_climate/api/"
 #DHIS2_API_POST_URL =  "https://mbdr.mm.dhis2.net/dhis/api/"
-#DHIS2_AUTH_POST = ("*******", "*******")
+#DHIS2_AUTH_POST = ("******", "*****")
 
-DHIS2_API_POST_URL =  "http://127.0.0.1:8092/dhis242/api/"
-DHIS2_AUTH_POST = ("*******", "*******")
+DHIS2_API_POST_URL =  "http://127.0.0.1:8091/dhis240/api/"
+DHIS2_AUTH_POST = ("******", "*****")
 
 #https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
@@ -120,7 +120,7 @@ def push_orgunit_in_dhis2(session_post, orgunit_payload, orgunit_uid, row ):
 
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'
 #orgunit_to_orgunit_post_excel_file_path = 'orgunit_to_orgunit_post.xlsx'
-orgunit_to_orgunit_post_excel_file_path = 'orgunit_to_orgunit_post_myanmar.xlsx'
+orgunit_to_orgunit_post_excel_file_path = 'orgunit_to_orgunit_post.xlsx'
 
 print( f"file_name . { orgunit_to_orgunit_post_excel_file_path }" )
 logging.info(f"file_name . { orgunit_to_orgunit_post_excel_file_path }")

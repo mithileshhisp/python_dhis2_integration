@@ -7,24 +7,28 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
-dhis2_username = "******"
+dhis2_username = "*****"
 dhis2_password = "******"
 
 from constants import LOG_FILE_OPTION_GRP_MEMBERS_PUT, LOG_FILE_EVENT_ERROR_LOG
 
 # DHIS2 API credentials and URL
 
-DHIS2_API_GET_URL = "https://hmistraining.mm.dhis2.net/train/api/"
+#DHIS2_API_GET_URL = "https://hmistraining.mm.dhis2.net/train/api/"
+DHIS2_API_GET_URL = "https://mbdr.mm.dhis2.net/dhis/api/"
+#DHIS2_AUTH_GET = ("*****", "*****")
 DHIS2_AUTH_GET = ("*****", "*****")
 
-dhis2_username = "*****"
-dhis2_password = "*****"
+dhis2_username = "*******"
+dhis2_password = "******"
 
 #DHIS2_API_POST_URL = "https://links.hispindia.org/nepal_climate/api/"
-DHIS2_API_POST_URL =  "https://hmistraining.mm.dhis2.net/train/api/"
+#DHIS2_API_POST_URL =  "https://hmistraining.mm.dhis2.net/train/api/"
+DHIS2_API_POST_URL =  "https://mbdr.mm.dhis2.net/dhis/api/"
 
 #DHIS2_AUTH_POST = ("*****", "*****")
-DHIS2_AUTH_POST = ("*****", "******")
+#DHIS2_AUTH_POST = ("*****", "*****")
+DHIS2_AUTH_POST = ("*****", "*****")
 
 #https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
@@ -145,6 +149,7 @@ with ThreadPoolExecutor(max_workers=1) as executor:
         if option_group_response_data:
             
             option_group_response_data["options"] = options_list
+            option_group_response_data["optionSet"] = { "id" :  option_set_uid}
 
             #print( f"option_group_response_data_payload . { option_group_response_data }" )
             #logging.info(f"event_payload . { option_group_response_data }")

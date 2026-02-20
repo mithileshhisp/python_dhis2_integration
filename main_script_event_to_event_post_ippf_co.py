@@ -7,9 +7,14 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
+import ssl
+import certifi
 
-dhis2_username = "admin"
-dhis2_password = "district"
+import urllib3 ## for disable warning of Certificate
+urllib3.disable_warnings() ## for disable warning of Certificate
+
+dhis2_username = "****"
+dhis2_password = "*****"
 
 from constants import LOG_FILE_EVENT_POST, LOG_FILE_EVENT_ERROR_LOG
 
@@ -17,11 +22,11 @@ from constants import LOG_FILE_EVENT_POST, LOG_FILE_EVENT_ERROR_LOG
 
 
 # DHIS2 API credentials and URL
-DHIS2_API_URL = "/api/"
+DHIS2_API_URL = "https://bpr.ippf.org/api/"
 DHIS2_AUTH = ("*****", "*****")
 
 
-
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session = requests.Session()
@@ -41,17 +46,18 @@ logging.info(f"event to event post start . { current_time_start }")
 
 def get_sqlview_data(session):
     
-    # event_list_for_migration = sw9NLEwlWXp
+    # event_list_for_migration = sw9NLEwlWXp sBE9FzEWzM5 ( 12/02/2026)
+    
    
-    sql_view_url = f"{DHIS2_API_URL}sqlViews/sw9NLEwlWXp/data.json?paging=false"
+    sql_view_url = f"{DHIS2_API_URL}sqlViews/sBE9FzEWzM5/data.json?paging=false"
 
     print(f"sql_view_url : {sql_view_url}")
 
     #response_sql_view = requests.get(sql_view_url,auth=HTTPBasicAuth(dhis2_username, dhis2_password))
     
-    response_sql_view = session.get(sql_view_url)
+    response_sql_view = session.get(sql_view_url, verify=False )
     
-    print(f"response_sql_view : {response_sql_view.text}")
+    #print(f"response_sql_view : {response_sql_view.text}")
 
     if response_sql_view.status_code == 200:
         #print(f"response_sql_view : {response_sql_view.status_code}")
@@ -81,7 +87,7 @@ def get_sqlview_data(session):
 
 
 
-def get_event_details(session,event_uid):
+def get_event_details(session, event_uid):
     
     #https://ln4.hispindia.org/timor_dev/api/events.json?orgUnit=Fn51zf6ifbm&ouMode=SELECTED&program=RUqNUsv6WBp&status=ACTIVE&skipPaging=true&filter=alV2b3AtVLw:eq:897
    
@@ -91,7 +97,7 @@ def get_event_details(session,event_uid):
     #print(event_search_url)
     #print(f" event_search_url : {event_get_url}" )
     #response = requests.get(event_search_url, auth=HTTPBasicAuth(dhis2_username, dhis2_password))
-    response = session.get(event_get_url)
+    response = session.get(event_get_url,verify=False )
     
     if response.status_code == 200:
         event_response_data = response.json()
@@ -102,6 +108,8 @@ def get_event_details(session,event_uid):
         dataValues = event_response_data.get('dataValues',[])
         #events = event_response_data.get('response', {})
         #print(f" dataValues : {dataValues}" )
+        print(f" program : {event_response_data.get('program')}" )
+        
         return event_response_data 
     else:
         return []
@@ -112,7 +120,7 @@ def push_events_in_dhis2(session, event_payload, event_uid, row ):
     #
     try:
         event_post_url = f"{DHIS2_API_URL}events"
-        response = session.post(event_post_url, data=json.dumps(event_payload), headers={"Content-Type": "application/json"})
+        response = session.post(event_post_url, data=json.dumps(event_payload), verify=False, headers={"Content-Type": "application/json"})
         response.raise_for_status()
         #print('####################################################### SUCCESSFUL ##########################################################', flush=True)
         #print(f'RECORD NO.: {record_count}   current benID: {row["BeneficiaryRegID"]}', flush=True)
@@ -148,8 +156,8 @@ with ThreadPoolExecutor(max_workers=10) as executor:
     #for index, eventDataValueRow in updateEventDataValues.iterrows():
     
     for index, eventUid in enumerate(sql_views_data):
-       
-        event_response_data = get_event_details( session, eventUid )
+        #print(f"event : {eventUid[0]}, orgUnit : {eventUid[1]}")
+        event_response_data = get_event_details( session, eventUid[0])
 
         if event_response_data:
             tempEventDataValues = list()
@@ -172,10 +180,10 @@ with ThreadPoolExecutor(max_workers=10) as executor:
                     "storedBy": event_response_data.get('storedBy'),
                     #"dataValues": event_response_data.get('dataValues',[])
                     "dataValues": tempEventDataValues
-                }
-            print( f"event_payload . { event_payload }" )
+            }
+            #print( f"event_payload . { event_payload }" )
             logging.info(f"event_payload . { event_payload }")
-            #executor.submit( push_events_in_dhis2, session, event_payload, eventUid, index+1 )
+            executor.submit( push_events_in_dhis2, session, event_payload, eventUid[0], index+1 )
         
 
 current_time_end = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
