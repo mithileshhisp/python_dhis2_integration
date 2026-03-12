@@ -30,6 +30,8 @@ LOG_FILE_EVENT_POST_XLSX = datetime.now().strftime("%Y-%m-%d") + "_event_post_xl
 
 LOG_FILE_ORGUNIT_POST = datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + "_organisationUnits_post.log"
 
+LOG_FILE_ORGUNIT_UPDATE = datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + "_organisationUnits_update.log"
+
 LOG_FILE_TEI_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_tei_error_log.txt"
 LOG_FILE_TEI_POST = datetime.now().strftime("%Y-%m-%d") + "_tei_post.txt"
 LOG_FILE_TEI_ENROLLMENT_POST = datetime.now().strftime("%Y-%m-%d") + "_tei_enrollment_post.txt"
@@ -54,6 +56,11 @@ LOG_FILE_PROGRAM_INDICATORS_POST = datetime.now().strftime("%Y-%m-%d") + "_progr
 
 LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateTEIAttributeValue.txt"
 LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_tei_update_error_log.txt"
+
+LOG_FILE_NEW_TABLE_CREATION_POSTGRES = datetime.now().strftime("%Y-%m-%d") + "_new_table_creation_postgres.txt"
+
+LOG_FILE_USERS_POST = datetime.now().strftime("%Y-%m-%d") + "_users_post.txt"
+LOG_FILE_USERS_DELETE = datetime.now().strftime("%Y-%m-%d") + "_users_delete.txt"
 
 
 

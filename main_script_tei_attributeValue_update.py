@@ -12,7 +12,7 @@ import urllib3 ## for disable warning of Certificate
 urllib3.disable_warnings() ## for disable warning of Certificate
 
 dhis2_username = "*****"
-dhis2_password = "*****"
+dhis2_password = "******"
 
 from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG
 
@@ -21,11 +21,11 @@ from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUT
 
 # DHIS2 API credentials and URL
 
-#DHIS2_API_URL = "https://hmis.moh.gov.mm/events/api/"
-DHIS2_API_URL = "https://tracker.hivaids.gov.np/save-child-2.27/api/"
-DHIS2_AUTH = ("*****", "*****")
+#DHIS2_API_URL = "******/api/"
+DHIS2_API_URL = "*****/api/"
+DHIS2_AUTH = ("******", "*****")
 
-#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
+
 
 # Create a session object for persistent connection
 session = requests.Session()
