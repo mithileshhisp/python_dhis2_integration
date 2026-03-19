@@ -3,10 +3,12 @@ import logging, datetime
 import json
 
 ## first -- test cloud flow link destop flow -- Accuity_RPA_Data_Entry - Individual
-#FLOW_URL = ""
+#FLOW_URL = "https://default56af9532501a404c995d80633a35c0.ac.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/5e4d6b6437544b798b93c2035d0a66bd/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qCVnbA5MH8um9u9Qwux6_xB0qlBxHgmHnNJ--kwPHOE"
+
 ## new cloud flow  Cloud flow Keyword Search  link destop flow -- Accuity_RPA_Data_Entry - KeyWord Search
 FLOW_URL = ""
 
+ACCUITY_FLOW_URL_ORG_UNIT_SEARCH = ""
 
 '''
 payload = {
@@ -40,6 +42,7 @@ headers = {
     "Content-Type": "application/json"
 }
 
+'''
 response = requests.post(
     FLOW_URL,
     headers=headers,
@@ -49,6 +52,21 @@ response = requests.post(
         "orgUnit": "OU_01",
         "program": "Prog_01",
         "PresidentName": "Ms.Ingrid Daniel ACJPL627361N"
+    }
+)
+'''
+## OrganizationName serach "EntityType":"Organization",
+## "OrganizationName": "Bank of Ceylon"
+response = requests.post(
+    ACCUITY_FLOW_URL_ORG_UNIT_SEARCH,
+    headers=headers,
+    json={
+        "eventUid": "abc123",
+        "action": "complete",
+        "orgUnit": "OU_01",
+        "program": "Prog_01",
+        "EntityType":"Organization",
+        "OrganizationName": "Commonwealth Bank of Australia"
     }
 )
 
@@ -73,10 +91,12 @@ print("##################################################################")
 
 data = json.loads(response.text)
 
-print(data["status"])
-print(data["eventUid"])
-print(data["PresidentName"])
-print(data["rawPageText"])
+print("Status", data["status"])
+print("eventUid", data["eventUid"])
+#print("PresidentName", data["PresidentName"])
+print("EntityType", data["EntityType"])
+print("OrganizationName", data["OrganizationName"])
+print("rawPageText", data["rawPageText"])
 
 
 #raw_json = json.loads(data["rawPageText"])
