@@ -7,7 +7,11 @@ import logging, datetime
 import pandas as pd
 from database_connection import connect_to_mysql
 import requests
+import ssl
+import certifi
 
+import urllib3 ## for disable warning of Certificate
+urllib3.disable_warnings() ## for disable warning of Certificate
 
 from constants import LOG_FILE_EVENT_DATA_VALUE_UPDATE
 
@@ -32,7 +36,6 @@ logging.basicConfig(filename=LOG_FILE_EVENT_DATA_VALUE_UPDATE, level=logging.INF
 
 
 dhis2_api_url = "******/api/"
-#dhis2_api_url = "https://pmnpis.org.ph/app/api/"
 
 un='*****'
 pw='*****'
@@ -66,6 +69,12 @@ for index, row in data_of_interest.iterrows():
 '''
 
 
+def clean_dhis2_value(val):
+    #import pandas as pd
+    if pd.isna(val) or val is None:
+        return ""
+    return str(val)
+
 def read_excel_to_dict(file_path):
 
     dataValueSet = pd.read_excel(file_path)
@@ -90,7 +99,7 @@ def read_excel_to_dict(file_path):
 
 
 #eventDataValue_update_excel_file_path = 'pmnp_is_event_dataValue_update.xlsx'
-eventDataValue_update_excel_file_path = 'bhutan_HH_event_dataValue_update.xlsx'
+eventDataValue_update_excel_file_path = 'eventDataValueUpdate.xlsx'
 print( f"file_name . { eventDataValue_update_excel_file_path }" )
 logging.info(f"file_name . { eventDataValue_update_excel_file_path }")
 
@@ -127,7 +136,8 @@ def update_eventDataValue_in_dhis2_xlsx(session, updateEventDataValue, eventUID,
     #print( f" updateEventDataValue . { updateEventDataValue }" )
     event_update_url = f"{dhis2_api_url}events/{eventUID}/{dataElementUid}"
     #print( f"event_update_url . { event_update_url }" )
-    response = session.put(event_update_url, json=updateEventDataValue, headers={"Content-Type": "application/json"})
+    # for IPPF CO BPR add verify=False,
+    response = session.put(event_update_url, json=updateEventDataValue, verify=False, headers={"Content-Type": "application/json"})
     
     if response.status_code == 200:
         conflictsDetails   = response.json().get("response", {}).get("conflicts")
@@ -149,22 +159,33 @@ def update_eventDataValue_in_dhis2_xlsx(session, updateEventDataValue, eventUID,
         logging.error(f"Failed to update events. Row No : {row_no} .conflictsDetails : {conflictsDetails} .Status code: {response.status_code} .error details: {response.json()} .Error: {response.text}")
 
 
-with ThreadPoolExecutor(max_workers=20) as executor:
+with ThreadPoolExecutor(max_workers=1) as executor:
 
     #print( f"length of event_list. { len(updateEventDataValues) }" )
     #logging.info( f"length of event_list . { len(updateEventDataValues) }" )
     for index, eventDataValueRow in updateEventDataValues.iterrows():
         #print(f"Row {index + 1}: {row}" )
-    
+
+        '''
+        raw_value = eventDataValueRow['value']
+        # ✅ Convert NaN → empty string (best for DHIS2)
+        if pd.isna(raw_value) or raw_value is None:
+            cleaned_value = ""
+        else:
+            cleaned_value = str(raw_value)
+        '''
         updateEventDataValue = {
             "event": eventDataValueRow['event'],
             "program": eventDataValueRow['program'],
             "dataValues": [
-                { "dataElement": eventDataValueRow['dataElement'], "value": eventDataValueRow['value'] }
-            ]                 
+                {
+                    "dataElement": eventDataValueRow['dataElement'],
+                    #"value": cleaned_value
+                    "value": clean_dhis2_value(eventDataValueRow['value'])
+                }
+            ]
         }
         executor.submit(update_eventDataValue_in_dhis2_xlsx, session, updateEventDataValue, eventDataValueRow['event'], eventDataValueRow['dataElement'], index + 2)
-
 
 current_time_end = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 print( f"update eventDataValue finished . { current_time_end }" )
