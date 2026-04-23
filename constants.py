@@ -6,6 +6,8 @@ LOG_FILE_ENROLLMENT = datetime.now().strftime("%Y-%m-%d") + "_enrollment.txt"
 LOG_FILE_EVENT = datetime.now().strftime("%Y-%m-%d") + "_event.txt"
 LOG_FILE_DATA_VALUE_SET = datetime.now().strftime("%Y-%m-%d") + "_dataValueSet.txt"
 
+LOG_FILE_DATA_VALUE_SET_DATA_SET_ATTRIBUTE = datetime.now().strftime("%Y-%m-%d") + "_dataValueSet_dataSetAttribute.txt"
+
 LOG_FILE_DATA_VALUE_SET_DELETE = datetime.now().strftime("%Y-%m-%d") + "_dataValueSetDelete.txt"
 
 

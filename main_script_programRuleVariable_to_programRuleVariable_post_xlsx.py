@@ -7,22 +7,23 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
-dhis2_username = "*****"
-dhis2_password = "*****"
+
 
 from constants import LOG_FILE_PROGRAMRULE_VARIABLE_POST, LOG_FILE_PROGRAMRULE_VARIABLE_ERROR_LOG
 
 # DHIS2 API credentials and URL
 
 
-DHIS2_API_GET_URL = "****/api/"
-DHIS2_AUTH_GET = ("*****", "*****")
+DHIS2_API_GET_URL = "https://stage.hispindia.org/tb_tracker/api/"
+DHIS2_AUTH_GET = ("****", "*****")
 
 
-DHIS2_API_POST_URL = "****/api/"
+
+
+DHIS2_API_POST_URL = "https://stage.hispindia.org/tb_tracker_ref/api/"
 DHIS2_AUTH_POST = ("****", "*****")
 
-
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session_get = requests.Session()
@@ -69,7 +70,7 @@ def get_programRuleVariables_details(session_get, programRuleVariable_uid):
     program_rule_variable_get_url = f"{DHIS2_API_GET_URL}programRuleVariables/{programRuleVariable_uid}.json"
 
     #print(program_rule_get_url)
-    #print( f"program_rule_get_url . { program_rule_get_url }" )
+    #print( f"program_rule_get_url . { program_rule_variable_get_url }" )
     #print(f" event_search_url : {event_get_url}" )
     #response = requests.get(event_search_url, auth=HTTPBasicAuth(dhis2_username, dhis2_password))
     response = session_get.get(program_rule_variable_get_url)
@@ -121,7 +122,8 @@ def push_programrule_variable_in_dhis2(session_post, programRuleVariable_payload
 
 
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'
-programRuleVariable_to_programRuleVariable_post_excel_file_path = 'programRuleVariable_to_programRuleVariable_post.xlsx'
+#programRuleVariable_to_programRuleVariable_post_excel_file_path = 'programRuleVariable_to_programRuleVariable_post.xlsx'
+programRuleVariable_to_programRuleVariable_post_excel_file_path = 'programRuleVariable_to_programRuleVariable_post_new.xlsx'
 
 print( f"file_name . { programRuleVariable_to_programRuleVariable_post_excel_file_path }" )
 logging.info(f"file_name . { programRuleVariable_to_programRuleVariable_post_excel_file_path }")
@@ -148,9 +150,13 @@ with ThreadPoolExecutor(max_workers=10) as executor:
             #logging.info(f" event_get_response_data trackedEntityInstance : {event_response_data.get('trackedEntityInstance')}" )
             
             #programRule_payload = program_rule_response_data
+            #programRule_variable_payload = program_rule_variable_response_data
+
             programRule_variable_payload = program_rule_variable_response_data.copy()
             programRule_variable_payload["id"] = programRuleVariableRow['programruleVariable_to']
             programRule_variable_payload["program"] = { "id" : programRuleVariableRow['program']}
+
+
             #programRule_payload["href"] = f"{DHIS2_API_POST_URL}programRules/{programRuleRow['programrule_to']}"
             #'href': 'https://links.hispindia.org/myr_registry/api/programRules/GOMzMSKlZsq'
 

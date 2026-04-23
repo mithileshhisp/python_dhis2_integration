@@ -13,17 +13,22 @@ from constants import LOG_FILE_USERS_POST
 
 # DHIS2 API credentials and URL
 
-#DHIS2_API_GET_URL = "******/events/api/"
-#DHIS2_AUTH_GET = ("*****", "******")
+#DHIS2_API_GET_URL = "https://hmis.moh.gov.mm/events/api/"
+#DHIS2_AUTH_GET = ("****", "*****")
 
 
-#DHIS2_API_POST_URL = "******/events/api/"
-#DHIS2_API_POST_URL =  "******/events/api/"
-#DHIS2_AUTH_POST = ("*****", "******")
+#DHIS2_API_POST_URL = "https://links.hispindia.org/nepal_climate/api/"
+#DHIS2_API_POST_URL =  "https://mbdr.mm.dhis2.net/dhis/api/"
+#DHIS2_AUTH_POST = ("****", "*****")
 
-DHIS2_API_POST_URL =  ""******/events/api/""
-DHIS2_AUTH_POST = ("*****", "******")
+#DHIS2_API_POST_URL =  "https://mbdr.moh.gov.mm/dhis/api/"
+#DHIS2_AUTH_POST = ("****", "*****")
 
+
+DHIS2_API_POST_URL =  "https://links.hispindia.org/tlllf_mis/api/"
+DHIS2_AUTH_POST = ("****", "*****")
+
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 
@@ -81,7 +86,9 @@ logging.info(f"user creation start at. { current_time_start }")
 # -------------------------------
 # Read Excel and convert to JSON
 # -------------------------------
-df = pd.read_excel("usersPost_242_mynmar_demo_11March2026.xlsx", sheet_name="usersPost242")
+
+#df = pd.read_excel("usersPost_242_mynmar_demo_11March2026.xlsx", sheet_name="usersPost242")
+df = pd.read_excel("usersPost_242.xlsx", sheet_name="usersPost242")
 # Convert NaN → None
 df = df.where(pd.notnull(df), None)
 
@@ -147,7 +154,7 @@ for i, row in enumerate(records, start=1):
 
     if row.get("userGroups"):
         usersPost["userGroups"] = [{"id": x.strip()} for x in str(row["userGroups"]).split(",")]
-
+ 
     if row.get("userRoles"):
         usersPost["userRoles"] = [{"id": x.strip()} for x in str(row["userRoles"]).split(",")]
 

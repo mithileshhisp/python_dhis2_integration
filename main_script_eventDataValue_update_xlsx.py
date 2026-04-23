@@ -33,12 +33,26 @@ logging.basicConfig(filename=LOG_FILE_EVENT_DATA_VALUE_UPDATE, level=logging.INF
 
 #mysql_connection.close()
 
+#dhis2_api_url = "https://hhs.drukhmis.gov.bt/bhutan_hhs/api/"
+#un='****'
+#pw='*****'
 
+#dhis2_api_url = "https://ln3.hispindia.org/pmnp_is/api/"
+#un='****'
+#pw='*****'
 
-dhis2_api_url = "******/api/"
+#dhis2_api_url = "https://dev.pmnpis.org.ph/pmnp_is/api/"
+#un='****'
+#pw='*****'
 
-un='*****'
-pw='*****'
+#dhis2_api_url = "https://hhs.drukhmis.gov.bt/bhutan_hhs/api/"
+#dhis2_api_url = "https://pmnpis.org.ph/app/api/"
+#dhis2_api_url =  "http://dss.nipi-cure.org:8665/odk_nipi/api/"
+
+dhis2_api_url = "https://links.hispindia.org/ippf_uin/api/"
+
+#un='****'
+#pw='*****'
 
 
 with requests.Session() as session:
@@ -159,7 +173,7 @@ def update_eventDataValue_in_dhis2_xlsx(session, updateEventDataValue, eventUID,
         logging.error(f"Failed to update events. Row No : {row_no} .conflictsDetails : {conflictsDetails} .Status code: {response.status_code} .error details: {response.json()} .Error: {response.text}")
 
 
-with ThreadPoolExecutor(max_workers=1) as executor:
+with ThreadPoolExecutor(max_workers=10) as executor:
 
     #print( f"length of event_list. { len(updateEventDataValues) }" )
     #logging.info( f"length of event_list . { len(updateEventDataValues) }" )

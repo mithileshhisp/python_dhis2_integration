@@ -9,19 +9,28 @@ from datetime import datetime
 import logging
 import pandas as pd
 
+#dhis2_api_url = "https://dhis.searo.who.int/lep/api/"
+#dhis2_api_url = "https://amr.hispindia.org/amr_jimma/api/"
+#dhis2_api_url = "https://nc.hispindia.org/dhis/api/"
 
-dhis2_api_url = "****/api/"
-dhis2_username = "****"
+#dhis2_api_url = "https://links.hispindia.org/ippf_co/api/"
+#dhis2_api_url = "https://bpr.ippf.org/api/"
+
+#dhis2_api_url = "https://dhis.searo.who.int/lep/api/"
+
+dhis2_api_url = "https://mm.dhis2.net/hmis/api/"
+#dhis2_api_url = "https://nc.hispindia.org/dhis/api/"
+dhis2_username = "******"
 dhis2_password = "*****"
 
-#dhis2_username = "*****"
+#dhis2_username = "****"
 #dhis2_password = "*****"
 
 
 
 
-DHIS2_API_GET_POST_URL = "******/api/"
-DHIS2_AUTH_GET_POST = ("*****", "******")
+DHIS2_API_GET_POST_URL = "https://nc.hispindia.org/dhis/api/"
+DHIS2_AUTH_GET_POST = ("****", "*****")
 
 
 session_get_post = requests.Session()

@@ -13,15 +13,19 @@ from constants import LOG_FILE_EVENT_POST_XLSX, LOG_FILE_EVENT_ERROR_LOG_XLSX
 
 # DHIS2 API credentials and URL
 
-dhis2_username = "*****"
-dhis2_password = "*****"
-# DHIS2 API credentials and URL
-DHIS2_API_GET_URL = "****/api/"
-DHIS2_AUTH_GET = ("*****", "*****")
+DHIS2_API_GET_URL = "https://bpr.ippf.org/api/"
+DHIS2_AUTH_GET = ("****", "*****")
 
 
-DHIS2_API_POST_URL = "****/api/"
+
+DHIS2_API_POST_URL = "https://links.hispindia.org/ippf_uin/api/"
+#DHIS2_AUTH_POST = ("****", "*****")
+
+#DHIS2_API_POST_URL = "https://pmnpis.org.ph/app/api/"
+#DHIS2_AUTH_POST = ("****", "*****")
 DHIS2_AUTH_POST = ("****", "*****")
+
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session_get = requests.Session()
@@ -123,7 +127,7 @@ def push_events_in_dhis2(session_post, event_payload, event_uid, row ):
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'
 
 #event_to_post_with_out_datavalue_excel_file_path = 'pmnp_event_post_without_data_value.xlsx'
-event_to_post_with_out_datavalue_excel_file_path = 'bhutah_hh_event_post_without_data_value.xlsx'
+event_to_post_with_out_datavalue_excel_file_path = 'event_post_without_data_value.xlsx'
 
 print( f"file_name . { event_to_post_with_out_datavalue_excel_file_path }" )
 logging.info(f"file_name . { event_to_post_with_out_datavalue_excel_file_path }")

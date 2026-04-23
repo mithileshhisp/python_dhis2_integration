@@ -11,8 +11,7 @@ from requests.auth import HTTPBasicAuth
 import urllib3 ## for disable warning of Certificate
 urllib3.disable_warnings() ## for disable warning of Certificate
 
-dhis2_username = "*****"
-dhis2_password = "******"
+
 
 from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG
 
@@ -21,11 +20,11 @@ from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUT
 
 # DHIS2 API credentials and URL
 
-#DHIS2_API_URL = "******/api/"
-DHIS2_API_URL = "*****/api/"
-DHIS2_AUTH = ("******", "*****")
+#DHIS2_API_URL = "https://hmis.moh.gov.mm/events/api/"
+DHIS2_API_URL = "https://links.hispindia.org/ippf_uin/api/"
+DHIS2_AUTH = ("****", "*****")
 
-
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session = requests.Session()
@@ -180,7 +179,7 @@ with ThreadPoolExecutor(max_workers=10) as executor:
         tei_response_data = get_tei_details( session, teiRow['tei'], teiRow['program']  )
 
         #tempTEIArributeValue = to_String(teiRow['attributeValue'].split(':')[1])
-        tempTEIArributeValue = to_String(teiRow['attributeValue'])
+        tempTEIArributeValue = to_String(teiRow['attributeValue']).lower()
 
         if tei_response_data:
             tempTeiAttributeValues = []
@@ -195,7 +194,7 @@ with ThreadPoolExecutor(max_workers=10) as executor:
                     "orgUnit": tei_response_data.get('orgUnit'),
                     "attributes": tempTeiAttributeValues
                 }
-            #print( f"event_payload . { event_payload }" )
+            print( f"tei_updateAttributeValue_payload . { tei_updateAttributeValue_payload }" )
             #logging.info(f"event_payload . { event_payload }")
             executor.submit( update_tei_attributeValue_in_dhis2, session, tei_updateAttributeValue_payload, teiRow['tei'], tempTEIArributeValue, index+1 )
         
