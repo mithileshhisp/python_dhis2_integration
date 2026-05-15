@@ -13,22 +13,30 @@ from constants import LOG_FILE_USERS_POST
 
 # DHIS2 API credentials and URL
 
-#DHIS2_API_GET_URL = "https://hmis.moh.gov.mm/events/api/"
-#DHIS2_AUTH_GET = ("****", "*****")
+#DHIS2_API_GET_URL = "******/api/"
+#DHIS2_AUTH_GET = ("*****", "******")
 
 
-#DHIS2_API_POST_URL = "https://links.hispindia.org/nepal_climate/api/"
-#DHIS2_API_POST_URL =  "https://mbdr.mm.dhis2.net/dhis/api/"
-#DHIS2_AUTH_POST = ("****", "*****")
 
-#DHIS2_API_POST_URL =  "https://mbdr.moh.gov.mm/dhis/api/"
-#DHIS2_AUTH_POST = ("****", "*****")
+#DHIS2_API_GET_URL = "*****/api/"
+#DHIS2_AUTH_GET = ("*****", "******")
+
+#DHIS2_API_POST_URL = "*****/api/"
+#DHIS2_API_POST_URL =  "******/api/"
+#DHIS2_AUTH_POST = ("*****", "******")
+
+#DHIS2_API_POST_URL =  "******/api/" ### production
+#DHIS2_API_POST_URL =  "******/api/" ### training
+#DHIS2_AUTH_POST = ("*****", "******")
+
+DHIS2_API_POST_URL =  "*******/api/" ### training
+DHIS2_AUTH_POST = ("*****", "******")
 
 
-DHIS2_API_POST_URL =  "https://links.hispindia.org/tlllf_mis/api/"
-DHIS2_AUTH_POST = ("****", "*****")
+#DHIS2_API_POST_URL =  "*******/api/"
+#DHIS2_AUTH_POST = ("*****", "******")
 
-#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
+
 
 # Create a session object for persistent connection
 
@@ -151,12 +159,34 @@ for i, row in enumerate(records, start=1):
 
     if row.get("teiSearchOrganisationUnits"):
         usersPost["teiSearchOrganisationUnits"] = [{"id": row["teiSearchOrganisationUnits"]}]
-
+    
+    '''
     if row.get("userGroups"):
         usersPost["userGroups"] = [{"id": x.strip()} for x in str(row["userGroups"]).split(",")]
- 
+    
+    '''
+    #strip() removes spaces (and other whitespace characters like tabs/newlines) from the beginning and end of a string.
+    '''
+    text = "   abc123   "
+    print(text.strip()) -- abc123
+    '''
+    
+    #This handles: None,NaN,empty string "", spaces " "
+    if pd.notna(row.get("userGroups")) and str(row.get("userGroups")).strip():
+        usersPost["userGroups"] = [
+            {"id": x.strip()}for x in str(row["userGroups"]).split(",")if x.strip()
+        ]
+
+    '''
     if row.get("userRoles"):
         usersPost["userRoles"] = [{"id": x.strip()} for x in str(row["userRoles"]).split(",")]
+    '''
+    
+    #This handles: None,NaN,empty string "", spaces " "
+    if pd.notna(row.get("userRoles")) and str(row.get("userRoles")).strip():
+        usersPost["userRoles"] = [
+            {"id": x.strip()} for x in str(row["userRoles"]).split(",") if x.strip()
+        ]        
 
     # POST user
     # remove None values

@@ -13,6 +13,10 @@ LOG_FILE_DATA_VALUE_SET_DELETE = datetime.now().strftime("%Y-%m-%d") + "_dataVal
 
 LOG_FILE_DATA_VALUE_SET_LAST_SYNC = datetime.now().strftime("%Y-%m-%d") + "_dataValueSet_last_sync.txt"
 LOG_FILE_EVENT_DATA_VALUE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEventDataValue.txt"
+
+LOG_FILE_EVENT_DATE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEventDate.txt"
+LOG_FILE_ENROLLMENT_DATE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEnrollmentDate.txt"
+
 LOG_FILE_EVENT_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_event_error_log.txt"
 LOG_FILE_EVENT_ERROR_LOG_XLSX = datetime.now().strftime("%Y-%m-%d") + "_event_error_log_xlsx.txt"
 
@@ -62,8 +66,13 @@ LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "
 LOG_FILE_NEW_TABLE_CREATION_POSTGRES = datetime.now().strftime("%Y-%m-%d") + "_new_table_creation_postgres.txt"
 
 LOG_FILE_USERS_POST = datetime.now().strftime("%Y-%m-%d") + "_users_post.txt"
+LOG_FILE_USERS_GROUP_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_group_update.txt"
 LOG_FILE_USERS_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_update.txt"
 LOG_FILE_USERS_DELETE = datetime.now().strftime("%Y-%m-%d") + "_users_delete.txt"
+
+LOG_FILE_TRANSLATION_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_translation_update.txt"
+LOG_FILE_OPTIONSET_SHATING_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_optionset_sharing_update.txt"
+LOG_FILE_DATAELEMENT_PUBLIC_ACCESS_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_dataElement_public_access_update.txt"
 
 
 
