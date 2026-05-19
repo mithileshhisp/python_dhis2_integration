@@ -54,6 +54,7 @@ LOG_FILE_PROGRAMRULE_ACTION_POST = datetime.now().strftime("%Y-%m-%d") + "_progr
 LOG_FILE_PROGRAMRULE_ACTION_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_programrule_action_error_log.txt"
 
 LOG_FILE_OPTIONS_POST = datetime.now().strftime("%Y-%m-%d") + "_options_post.txt"
+LOG_FILE_OPTIONS_DELETE = datetime.now().strftime("%Y-%m-%d") + "_options_delete.txt"
 LOG_FILE_OPTION_GRP_MEMBERS_PUT = datetime.now().strftime("%Y-%m-%d") + "_option_grp_member_put.txt"
 
 LOG_FILE_OPTIONS_TRANSLATION_POST = datetime.now().strftime("%Y-%m-%d") + "_options_translation_post.txt"
@@ -67,6 +68,10 @@ LOG_FILE_NEW_TABLE_CREATION_POSTGRES = datetime.now().strftime("%Y-%m-%d") + "_n
 
 LOG_FILE_USERS_POST = datetime.now().strftime("%Y-%m-%d") + "_users_post.txt"
 LOG_FILE_USERS_GROUP_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_group_update.txt"
+
+LOG_FILE_USERS_DISABLED_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_disabled_update.txt"
+
+LOG_FILE_USERS_ORG_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_org_update.txt"
 LOG_FILE_USERS_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_update.txt"
 LOG_FILE_USERS_DELETE = datetime.now().strftime("%Y-%m-%d") + "_users_delete.txt"
 
