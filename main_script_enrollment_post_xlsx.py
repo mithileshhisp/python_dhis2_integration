@@ -13,15 +13,15 @@ from constants import LOG_FILE_ENROLLMENT_POST_XLSX, LOG_FILE_ENROLLMENT_ERROR_L
 
 # DHIS2 API credentials and URL
 
-dhis2_username = "*****"
-dhis2_password = "*****"
-# DHIS2 API credentials and URL
-DHIS2_API_GET_URL = "****/api/"
-DHIS2_AUTH_GET = ("*****", "*****")
+DHIS2_API_GET_URL = "https://bpr.ippf.org/api/"
+DHIS2_AUTH_GET = ("*****", "******")
 
 
-DHIS2_API_POST_URL = "****/api/"
-DHIS2_AUTH_POST = ("****", "*****")
+
+DHIS2_API_POST_URL = "https://links.hispindia.org/tlllf_cmhpmis/api/"
+DHIS2_AUTH_POST = ("*****", "*****")
+
+
 
 # Create a session object for persistent connection
 session_get = requests.Session()
@@ -56,8 +56,8 @@ def push_enrollment_in_dhis2(session_post, enrollment_payload, tei_uid, row ):
         #event_ids = [item.get("event") for item in response.json().get("response", {}).get("importSummaries", [])[0].get("importCount",{}).get("imported")]
         #print(f"Events created successfully. Event IDs: {response.json()}")
         enrollment_count = response.json().get("response", {}).get("importSummaries", [])[0].get("importCount",{}).get("imported")
-        print(f" Enrollment created successfully. enrollment_uid : {tei_uid} . row : {row} Enrollment count: {enrollment_count}. imported Enrollment : {imported_enrollment_uid}")
-        logging.info(f" Enrollment created successfully. enrollment_uid : {tei_uid} . row : {row} .Enrollment count: {enrollment_count}. imported Enrollment : {imported_enrollment_uid}")
+        print(f" Enrollment created successfully. tei_uid : {tei_uid} . row : {row} Enrollment count: {enrollment_count}. imported Enrollment : {imported_enrollment_uid}")
+        logging.info(f" Enrollment created successfully. tei_uid : {tei_uid} . row : {row} .Enrollment count: {enrollment_count}. imported Enrollment : {imported_enrollment_uid}")
     except requests.RequestException as e:
         resp_msg=response.text
         ind=resp_msg.find('conflict')
@@ -68,16 +68,16 @@ def push_enrollment_in_dhis2(session_post, enrollment_payload, tei_uid, row ):
         #logging.error(f"Failed to create events .event_uid : {event_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
 
         with open(LOG_FILE_ENROLLMENT_ERROR_LOG_XLSX, 'a') as fail_record:
-            fail_record.write(f'\ncurrent enrollment_uid: {tei_uid}. \n Error Message: {resp_msg[ind-1:]}\n')
+            fail_record.write(f'\ncurrent tei_uid: {tei_uid}. \n Error Message: {resp_msg[ind-1:]}\n')
             fail_record.write("----------------------------------------------------------------------------------------\n")
 
         print(f" Failed to create Enrollment. Error: {response.text}")
-        logging.error(f"Failed to create Enrollment . enrollment_uid : {tei_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
+        logging.error(f"Failed to create Enrollment . tei_uid : {tei_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
 
 
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'
 #enrollments_post_api_excel_file_path = 'enrollments_post_api.xlsx'
-enrollments_post_api_excel_file_path = 'enrollments_post_api_ippf_BPR.xlsx'
+enrollments_post_api_excel_file_path = 'enrollments_post_api.xlsx'
 
 
 print( f"file_name . { enrollments_post_api_excel_file_path }" )

@@ -15,6 +15,7 @@ LOG_FILE_DATA_VALUE_SET_LAST_SYNC = datetime.now().strftime("%Y-%m-%d") + "_data
 LOG_FILE_EVENT_DATA_VALUE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEventDataValue.txt"
 
 LOG_FILE_EVENT_DATE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEventDate.txt"
+LOG_FILE_EVENT_ORGUNIT_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEventOrgUnit.txt"
 LOG_FILE_ENROLLMENT_DATE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateEnrollmentDate.txt"
 
 LOG_FILE_EVENT_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_event_error_log.txt"
@@ -64,12 +65,18 @@ LOG_FILE_PROGRAM_INDICATORS_POST = datetime.now().strftime("%Y-%m-%d") + "_progr
 LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_updateTEIAttributeValue.txt"
 LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_tei_update_error_log.txt"
 
+LOG_FILE_TEI_TETYPE_VALUE_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_update_tei_trackedentityType.txt"
+LOG_FILE_TEI_TETYPE_VALUE_ERROR_LOG = datetime.now().strftime("%Y-%m-%d") + "_tei_update_trackedentityType_error_log.txt"
+
+
 LOG_FILE_NEW_TABLE_CREATION_POSTGRES = datetime.now().strftime("%Y-%m-%d") + "_new_table_creation_postgres.txt"
 
 LOG_FILE_USERS_POST = datetime.now().strftime("%Y-%m-%d") + "_users_post.txt"
 LOG_FILE_USERS_GROUP_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_group_update.txt"
 
 LOG_FILE_USERS_DISABLED_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_disabled_update.txt"
+
+LOG_FILE_EVENT_DATAVALUE_MULTIPLE_DE = datetime.now().strftime("%Y-%m-%d") + "_event_update_multiple_dataelement.txt"
 
 LOG_FILE_USERS_ORG_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_org_update.txt"
 LOG_FILE_USERS_UPDATE = datetime.now().strftime("%Y-%m-%d") + "_users_update.txt"

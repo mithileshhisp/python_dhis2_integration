@@ -14,10 +14,9 @@ from constants import LOG_FILE_USERS_ORG_UPDATE
 # DHIS2 API credentials and URL
 
 
-DHIS2_API_POST_URL =  "*******/api/" ### training
+
+DHIS2_API_POST_URL =  "https://uin.ippf.org/api/"
 DHIS2_AUTH_POST = ("*****", "******")
-
-
 
 # Create a session object for persistent connection
 
@@ -39,6 +38,9 @@ logging.basicConfig(filename=log_path, level=logging.INFO, format="%(asctime)s -
 #with requests.Session() as session:
     #session.auth = (un, pw)
 
+#BASE_URL = "https://your-dhis2-url/api/"
+#USERNAME = "****"
+#PASSWORD = "****"
 
 #session_post = requests.Session()
 #session.auth = (USERNAME, PASSWORD)
@@ -121,6 +123,26 @@ for i, row in enumerate(records, start=1):
         
         updateUserTeiSearchOrgUnit = user
     
+        #This handles: None,NaN,empty string "", spaces " "
+        '''
+        if pd.notna(row.get("teiSearchOrganisationUnits")) and str(row.get("teiSearchOrganisationUnits")).strip():
+            updateUserTeiSearchOrgUnit["teiSearchOrganisationUnits"] = [
+            {"id": x.strip()}for x in str(row["teiSearchOrganisationUnits"]).split(",")if x.strip()
+        ]
+        '''
+
+        #This handles: None,NaN,empty string "", spaces " "
+        if pd.notna(row.get("organisationUnits")) and str(row.get("organisationUnits")).strip():
+            updateUserTeiSearchOrgUnit["organisationUnits"] = [
+            {"id": x.strip()}for x in str(row["organisationUnits"]).split(",")if x.strip()
+        ]
+        
+        #This handles: None,NaN,empty string "", spaces " "
+        if pd.notna(row.get("dataViewOrganisationUnits")) and str(row.get("dataViewOrganisationUnits")).strip():
+            updateUserTeiSearchOrgUnit["dataViewOrganisationUnits"] = [
+            {"id": x.strip()}for x in str(row["dataViewOrganisationUnits"]).split(",")if x.strip()
+        ]
+
         #This handles: None,NaN,empty string "", spaces " "
         if pd.notna(row.get("teiSearchOrganisationUnits")) and str(row.get("teiSearchOrganisationUnits")).strip():
             updateUserTeiSearchOrgUnit["teiSearchOrganisationUnits"] = [

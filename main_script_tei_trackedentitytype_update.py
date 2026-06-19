@@ -11,7 +11,9 @@ from requests.auth import HTTPBasicAuth
 import urllib3 ## for disable warning of Certificate
 urllib3.disable_warnings() ## for disable warning of Certificate
 
-from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG
+
+
+from constants import LOG_FILE_TEI_TETYPE_VALUE_UPDATE, LOG_FILE_TEI_TETYPE_VALUE_ERROR_LOG
 
 # DHIS2 API credentials and URL
 
@@ -20,18 +22,17 @@ from constants import LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, LOG_FILE_TEI_ATTRIBUT
 
 #DHIS2_API_URL = "https://hmis.moh.gov.mm/events/api/"
 #DHIS2_API_URL = "https://links.hispindia.org/ippf_uin/api/"
-#DHIS2_API_URL = "https://hhs.drukhmis.gov.bt/bhutan_hhs/api/"
-#DHIS2_AUTH = ("*****", "*****")
+DHIS2_API_URL = "https://hmistraining.mm.dhis2.net/train/api/"
+DHIS2_AUTH = ("******", "******")
 
-DHIS2_API_URL = "https://links.hispindia.org/ippf_uin/api/"
-DHIS2_AUTH = ("*****", "*****")
 
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session = requests.Session()
 session.auth = DHIS2_AUTH
 
-logging.basicConfig(filename=LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(filename=LOG_FILE_TEI_TETYPE_VALUE_UPDATE, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 #with requests.Session() as session:
     #session.auth = (un, pw)
@@ -39,8 +40,8 @@ logging.basicConfig(filename=LOG_FILE_TEI_ATTRIBUTE_VALUE_UPDATE, level=logging.
 
 # Get the current date and time
 current_time_start = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-print( f"update TEI attributeValue start . { current_time_start }" )
-logging.info(f"update TEI attributeValue start . { current_time_start }")
+print( f"update TEI trackedentitytype start . { current_time_start }" )
+logging.info(f"update TEI trackedentitytype start . { current_time_start }")
 
 
 def get_sqlview_data(session):
@@ -123,26 +124,26 @@ def get_tei_details(session, tei_uid, program_uid):
     else:
         return []
 
-def update_tei_attributeValue_in_dhis2(session, tei_updateAttributeValue_payload, tei_uid, attribute_value, row_no ):
+def update_tei_trackedentitytype_in_dhis2(session, update_tei_trackedentitytype, tei_uid, row_no ):
     #
     try:
-        tei_attributeValue_update_url = f"{DHIS2_API_URL}trackedEntityInstances/{tei_uid}"
+        tei_trackedentitytype_update_url = f"{DHIS2_API_URL}trackedEntityInstances/{tei_uid}"
 
         #event_update_url = f"{dhis2_api_url}events/{eventUID}/{dataElementUid}"
-        response = session.put(tei_attributeValue_update_url, data=json.dumps(tei_updateAttributeValue_payload), headers={"Content-Type": "application/json"}, verify=False)
+        response = session.put(tei_trackedentitytype_update_url, data=json.dumps(update_tei_trackedentitytype), headers={"Content-Type": "application/json"}, verify=False)
         response.raise_for_status()
 
         if response.status_code == 200:
             conflictsDetails   = response.json().get("response", {}).get("conflicts")
        
-            print(f"TEI updated successfully. Row No : {row_no}. updated tei : {tei_uid}. attribute : P3Spi0kT92n .value : {attribute_value}")
-            logging.info(f"TEI updated successfully. Row No : {row_no}. updated tei : {tei_uid}. attribute : P3Spi0kT92n .value : {attribute_value}")
+            print(f"TEI updated successfully. Row No : {row_no}. updated tei : {tei_uid}.")
+            logging.info(f"TEI updated successfully. Row No : {row_no}. updated tei : {tei_uid}.")
             #logging.info(f"Event created successfully . BenVisitID : {BenVisitID} . BeneficiaryRegID : {BeneficiaryRegID}. Event count: {event_count}. Event uid: {event_uid}" )
             #logging.info("MySQL connection closed")
 
         else:
-            print(f"Failed to update TEI attributeValue. Error: {response.text}")
-            logging.error(f"Failed to update TEI attributeValue. Row No : {row_no} .conflictsDetails : {conflictsDetails} .Status code: {response.status_code} .error details: {response.json()} .Error: {response.text}")
+            print(f"Failed to update TEI trackedentitytype. Error: {response.text}")
+            logging.error(f"Failed to update TEI trackedentitytype. Row No : {row_no} .conflictsDetails : {conflictsDetails} .Status code: {response.status_code} .error details: {response.json()} .Error: {response.text}")
 
     except requests.RequestException as e:
         resp_msg=response.text
@@ -153,22 +154,22 @@ def update_tei_attributeValue_in_dhis2(session, tei_updateAttributeValue_payload
         #print(f"Failed to create events. Error: {response.text}")
         #logging.error(f"Failed to create events .event_uid : {event_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
 
-        with open(LOG_FILE_TEI_ATTRIBUTE_VALUE_ERROR_LOG, 'a') as fail_record:
+        with open(LOG_FILE_TEI_TETYPE_VALUE_ERROR_LOG, 'a') as fail_record:
             fail_record.write(f'\ncurrent tei_uid: {tei_uid}. \n Error Message: {resp_msg[ind-1:]}\n')
             fail_record.write("----------------------------------------------------------------------------------------\n")
 
-        print(f" Failed to update TEI attributeValue. Error: {response.text}")
-        logging.error(f"Failed to update TEI attributeValue . tei_uid : {tei_uid} . row : {row_no} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
+        print(f" Failed to update TEI trackedentitytype. Error: {response.text}")
+        logging.error(f"Failed to update TEI trackedentitytype . tei_uid : {tei_uid} . row : {row_no} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
 
 
-tei_attributeValue_update_excel_file_path = 'updateTEIAttributeValue.xlsx'
-print( f"file_name . { tei_attributeValue_update_excel_file_path }" )
-logging.info(f"file_name . { tei_attributeValue_update_excel_file_path }")
+tei_trackedentityType_update_excel_file_path = 'updateTeiTrackedentityType.xlsx'
+print( f"file_name . { tei_trackedentityType_update_excel_file_path }" )
+logging.info(f"file_name . { tei_trackedentityType_update_excel_file_path }")
 
 with ThreadPoolExecutor(max_workers=10) as executor:
     # Create a session object for persistent connection
     
-    tei_list = pd.read_excel(tei_attributeValue_update_excel_file_path)
+    tei_list = pd.read_excel(tei_trackedentityType_update_excel_file_path)
     #print( f"length of tei. { tei_list }" )
     print( f"length of tei. { len(tei_list) }" )
     logging.info( f"length of tei . { len(tei_list) }" )
@@ -179,60 +180,23 @@ with ThreadPoolExecutor(max_workers=10) as executor:
         #print( f"teiRow. {teiRow['tei']} {teiRow['program']}, {str(teiRow['attributeValue'])} " )
         tei_response_data = get_tei_details( session, teiRow['tei'], teiRow['program']  )
 
-        #tempTEIArributeValue = to_String(teiRow['attributeValue'].split(':')[1])
-        #tempTEIArributeValue = to_String(teiRow['attributeValue']).lower()
-        tempTEIArributeValue = to_String(teiRow['attributeValue'])
-
-        # Skip NaN, None, empty
-        if (
-            pd.notna(tempTEIArributeValue)
-            and tempTEIArributeValue is not None
-            and str(tempTEIArributeValue).strip() != ""
-        ):
-            # Update existing value
-            #updatedTEIArributeValue = str(tempTEIArributeValue).strip()    
-
-            if tei_response_data:
-                existing_attributes = tei_response_data.get("attributes", [])
-
-                updated = False
-                for attr in existing_attributes:
-                    if attr["attribute"] == teiRow['teiAttribute']:
-                        attr["value"] = tempTEIArributeValue
-                        updated = True
-
-                if not updated:
-                    existing_attributes.append({
-                        "attribute": teiRow['teiAttribute'],
-                        "value": tempTEIArributeValue
-                    })
-
-                tei_updateAttributeValue_payload = {
-                    "orgUnit": tei_response_data.get('orgUnit'),
-                    "attributes": existing_attributes
-                }
-
-                '''
-                tempTeiAttributeValues = []
-                #tempEventDataValues = tei_response_data.get('attributes',[])
-                teiAttributeValue = {
-                    "attribute": teiRow['teiAttribute'],
-                    "value": tempTEIArributeValue
-                }
+        if tei_response_data:
             
-                tempTeiAttributeValues.insert(0, teiAttributeValue)
-                
-                tei_updateAttributeValue_payload = {
-                        "orgUnit": tei_response_data.get('orgUnit'),
-                        "attributes": tempTeiAttributeValues
-                    }
-                '''    
-                #print( f"tei_updateAttributeValue_payload . { tei_updateAttributeValue_payload }" )
-                #logging.info(f"event_payload . { event_payload }")
-                executor.submit( update_tei_attributeValue_in_dhis2, session, tei_updateAttributeValue_payload, teiRow['tei'], tempTEIArributeValue, index+1 )
+            #update_tei_trackedentitytype = tei_response_data
+
+            existing_attributes = tei_response_data.get("attributes", [])
+            update_tei_trackedentitytype_payload = {
+                "orgUnit": tei_response_data.get('orgUnit'),
+                "attributes": existing_attributes,
+                "trackedEntityType":teiRow.get("trackedEntityType")
+            }
             
+            print( f"update_tei_trackedentitytype . { update_tei_trackedentitytype_payload }" )
+            #logging.info(f"event_payload . { event_payload }")
+            executor.submit( update_tei_trackedentitytype_in_dhis2, session, update_tei_trackedentitytype_payload, teiRow['tei'], index+1 )
+        
 
 current_time_end = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-print( f"update TEI attributeValue end . { current_time_end }" )
-logging.info(f"update TEI attributeValue end . { current_time_end }")
+print( f"update TEI trackedentitytype end . { current_time_end }" )
+logging.info(f"update TEI trackedentitytype end . { current_time_end }")
 

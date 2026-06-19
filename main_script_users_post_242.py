@@ -13,29 +13,13 @@ from constants import LOG_FILE_USERS_POST
 
 # DHIS2 API credentials and URL
 
-#DHIS2_API_GET_URL = "******/api/"
-#DHIS2_AUTH_GET = ("*****", "******")
+#DHIS2_API_GET_URL = "https://hmistraining.mm.dhis2.net/train/api/"
+#DHIS2_AUTH_GET = ("******", "*******")
 
 
 
-#DHIS2_API_GET_URL = "*****/api/"
-#DHIS2_AUTH_GET = ("*****", "******")
-
-#DHIS2_API_POST_URL = "*****/api/"
-#DHIS2_API_POST_URL =  "******/api/"
-#DHIS2_AUTH_POST = ("*****", "******")
-
-#DHIS2_API_POST_URL =  "******/api/" ### production
-#DHIS2_API_POST_URL =  "******/api/" ### training
-#DHIS2_AUTH_POST = ("*****", "******")
-
-DHIS2_API_POST_URL =  "*******/api/" ### training
-DHIS2_AUTH_POST = ("*****", "******")
-
-
-#DHIS2_API_POST_URL =  "*******/api/"
-#DHIS2_AUTH_POST = ("*****", "******")
-
+DHIS2_API_POST_URL =  "https://uin.ippf.org/api/"
+DHIS2_AUTH_POST = ("*******", "*******")
 
 
 # Create a session object for persistent connection

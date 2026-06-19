@@ -21,7 +21,7 @@ logging.basicConfig(filename=log_path, level=logging.INFO, format="%(asctime)s -
 # ==========================================
 # CONFIGURATION
 # ==========================================
-BASE_URL = "********"
+BASE_URL = "https://hmistraining.mm.dhis2.net/train"
 USERNAME = "******"
 PASSWORD = "******"
 
@@ -75,6 +75,7 @@ for index, row in df.iterrows():
         # ==========================================
         # GET DATA ELEMENT
         # ==========================================
+        '''
         get_url = f"{BASE_URL}/api/dataElements/{data_element_uid}.json?paging=false"
 
         get_response = session.get(get_url)
@@ -94,45 +95,99 @@ for index, row in df.iterrows():
             continue
 
         update_data_element = get_response.json()
+        '''
 
         # ==========================================
         # UPDATE SHARING PUBLIC ACCESS
         # ==========================================
+        '''
         update_data_element["id"] = data_element_uid
 
         if "sharing" not in update_data_element:
             update_data_element["sharing"] = {}
 
         update_data_element["sharing"]["public"] = public_access
+        '''
+
+        # ==========================================
+        # GET EXISTING SHARING SETTINGS
+        # ==========================================
+        get_url = f"{BASE_URL}/api/sharing.json?type=dataElement&id={data_element_uid}"
+
+        get_response = session.get(get_url)
+
+        if get_response.status_code != 200:
+            print(
+                f'Row - {import_count} GET error: '
+                f'{get_response.status_code} - {get_response.text}'
+            )
+            logging.info(
+                f'Row - {import_count} GET error: '
+                f'{get_response.status_code} - {get_response.text}'
+            )
+            skipped += 1
+            continue
+
+        data_element_sharing_response = get_response.json()
+
+        # ==========================================
+        # PREPARE SHARING PAYLOAD
+        # ==========================================
+        sharing_payload = {
+            "allowPublicAccess": data_element_sharing_response.get("allowPublicAccess"),
+            "allowExternalAccess": data_element_sharing_response.get("allowExternalAccess"),
+            "object": {
+                "id": data_element_sharing_response["object"]["id"],
+                "name": data_element_sharing_response["object"]["name"],
+                "displayName": data_element_sharing_response["object"]["displayName"],
+                "user": data_element_sharing_response["object"].get("user"),
+                "userGroupAccesses": data_element_sharing_response["object"].get("userGroupAccesses", []),
+                "userAccesses": data_element_sharing_response["object"].get("userAccesses", []),
+                "externalAccess": data_element_sharing_response["object"].get("externalAccess"),
+                "publicAccess": public_access
+            }
+        }
+
+        # ==========================================
+        # POST UPDATED SHARING SETTINGS
+        # ==========================================
+        #https://hmistraining.mm.dhis2.net/train/api/29/sharing?type=dataElement&id=sj9ryIuH8nw
+        post_url = f"{BASE_URL}/api/sharing.json?type=dataElement&id={data_element_uid}"
+
+        post_response = session.post(
+            post_url,
+            data=json.dumps(sharing_payload)
+        )
 
         # ==========================================
         # PUT UPDATED DATA ELEMENT
         # ==========================================
+        '''
         put_url = f"{BASE_URL}/api/dataElements/{data_element_uid}"
-
+        #print(json.dumps(update_data_element, indent=2))
         put_response = session.put(
             put_url,
             data=json.dumps(update_data_element)
         )
-
-        if put_response.status_code in [200, 201]:
+        '''
+        if post_response.status_code in [200, 201]:
             print(
                 f"Row - {import_count} update done response: "
-                f"{put_response.text}"
+                f"{post_response.text}"
             )
             logging.info(
                 f"Row - {import_count} update done response: "
-                f"{put_response.text}"
+                f"{post_response.text}"
             )
             update += 1
         else:
             print(
                 f"Row - {import_count} error response: "
-                f"{put_response.status_code} - {put_response.text}"
+                f"{post_response.status_code} - {post_response.text}"
             )
             logging.info(
                 f"Row - {import_count} error response: "
-                f"{put_response.status_code} - {put_response.text}"
+                f"{post_response.status_code} - {post_response.text}"
             )
             failed += 1
 
