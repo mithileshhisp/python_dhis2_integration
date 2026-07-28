@@ -5,10 +5,10 @@ import json
 # DHIS2 SERVER CONFIGURATION
 # ============================================================
 # select * from tablehook;
-#DHIS2_URL = "*******/pmnpis_dev"   # <-- change this
-DHIS2_URL = "*******/bhutan_hhs"   # <-- change this production
+#DHIS2_URL = "https://stage.hispindia.org/pmnpis_dev"   # <-- change this
+DHIS2_URL = "https://hhs.drukhmis.gov.bt/bhutan_hhs"   # <-- change this production
 USERNAME = "*****"
-PASSWORD = "****"
+PASSWORD = "******"
 
 ENDPOINT = "/api/analyticsTableHooks"   # correct for DHIS2 2.40
 #https://hhs.drukhmis.gov.bt/bhutan_hhs/api/analyticsTableHooks?paging=false&fields=*
@@ -123,9 +123,9 @@ SELECT
 }
 '''
 
-eventHookPayload_house_hold_updated = {
-    "id": "ROr6zdm4HQb",
-    "name": "_analytics_linelist_hh",
+eventHookPayload_house_hold_updated_with_users = {
+    #"id": "ROr6zdm4HQb",
+    "name": "_analytics_linelist_hh_with_users",
     "phase": "ANALYTICS_TABLE_POPULATED",
     "analyticsTableType": "EVENT",
     
@@ -206,7 +206,17 @@ eventHookPayload_house_hold_updated = {
         dd."tjXaQPI9OcQ" as HH___Household_Survey_Date,
         dd."YGisOzETviK" as HH___HH_Salt_iodine_content,
         dd."GtSSMCc6nXz" as HH___LLINs_present_in_HH,
-        dd."rWCn0WGoAeS" as HH___HHM_slept_under_LLIN_in_last_12_months
+        dd."rWCn0WGoAeS" as HH___HHM_slept_under_LLIN_in_last_12_months,
+
+        dd.createdbyusername AS created_by_username,
+        dd.createdbyname AS created_by_first_name,
+        dd.createdbylastname AS created_by_last_name,
+        dd.createdbydisplayname AS created_by_display_name,
+
+        dd.lastupdatedbyusername AS last_updated_by_username,
+        dd.lastupdatedbyname AS last_updated_by_first_name,
+        dd.lastupdatedbylastname AS last_updated_by_last_name,
+        dd.lastupdatedbydisplayname AS last_updated_by_display_name
 
 
         FROM latest_events dd
@@ -220,9 +230,9 @@ eventHookPayload_house_hold_updated = {
     """
 }
 
-eventHookPayload_house_hold_member_updated = {
+eventHookPayload_house_hold_member_with_users = {
     #"id": "hu2033d7sZw", tubTCfyKArM
-    "name": "_analytics_linelist_hh_member",
+    "name": "_analytics_linelist_hh_member_with_users",
     "phase": "ANALYTICS_TABLE_POPULATED",
     "analyticsTableType": "EVENT",
     
@@ -386,7 +396,17 @@ eventHookPayload_house_hold_member_updated = {
         dd."ztinvfhAZnN" as HHM_1___Location_of_death,
         dd."IWmyyzSPchd" as HHM_2___Problems_due_to_alcohol_consumption,
         dd."NAZ7d8bUbjd" as HHM_2___Daily_physical_exertion_work,
-        dd."jswy7SbqErA" as HHM_1___Live_births_last_year
+        dd."jswy7SbqErA" as HHM_1___Live_births_last_year,
+
+        dd.createdbyusername AS created_by_username,
+        dd.createdbyname AS created_by_first_name,
+        dd.createdbylastname AS created_by_last_name,
+        dd.createdbydisplayname AS created_by_display_name,
+
+        dd.lastupdatedbyusername AS last_updated_by_username,
+        dd.lastupdatedbyname AS last_updated_by_first_name,
+        dd.lastupdatedbylastname AS last_updated_by_last_name,
+        dd.lastupdatedbydisplayname AS last_updated_by_display_name
 
         FROM latest_events dd
 
@@ -405,13 +425,27 @@ eventHookPayload_house_hold_member_updated = {
 # SEND REQUEST
 # ============================================================
 
+
 response = requests.post(
     DHIS2_URL + ENDPOINT,
     auth=(USERNAME, PASSWORD),
     headers={"Content-Type": "application/json"},
-    data=json.dumps(eventHookPayload_house_hold_member_updated)
+    data=json.dumps(eventHookPayload_house_hold_updated_with_users)
 )
 
+
+# ============================================================
+# SEND REQUEST for DELETE EVENTHOOK
+# ============================================================
+
+'''
+event_hook_id = "/fvvGDpypuIy"
+response = requests.delete(
+    DHIS2_URL + ENDPOINT + event_hook_id,
+    auth=(USERNAME, PASSWORD),
+    headers={"Content-Type": "application/json"}
+)
+'''
 
 # ============================================================
 # RESULT

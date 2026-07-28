@@ -31,7 +31,17 @@ LOG_FILE_DELETE_TEI_XLSX = datetime.now().strftime("%Y-%m-%d") + "_tei_delete_xl
 LOG_FILE_DELETE_EVENT_ERROR_LOG_XLSX = datetime.now().strftime("%Y-%m-%d") + "_tei_delete_error_log_xlsx.txt"
 LOG_FILE_DELETE_EVENT_XLSX = datetime.now().strftime("%Y-%m-%d") + "_event_delete_xlsx.txt"
 
+
+
+LOG_FILE_DELETE_ENROLLMENT_ERROR_LOG_XLSX = datetime.now().strftime("%Y-%m-%d") + "_enrollment_delete_error_log_xlsx.txt"
+LOG_FILE_DELETE_ENROLLMENT_XLSX = datetime.now().strftime("%Y-%m-%d") + "_enrollment_delete_xlsx.txt"
+
+LOG_FILE_DELETE_PROGRAM_RULE_XLSX = datetime.now().strftime("%Y-%m-%d") + "_program_rule_delete_xlsx.txt"
+LOG_FILE_DELETE_PROGRAM_RULE_ERROR_LOG_XLSX = datetime.now().strftime("%Y-%m-%d") + "_program_rule_delete_error_log_xlsx.txt"
+
+
 LOG_FILE_EVENT_POST = datetime.now().strftime("%Y-%m-%d") + "_event_post.txt"
+LOG_FILE_EVENT_TO_EVENT_POST = datetime.now().strftime("%Y-%m-%d") + "_event_to_event_post.txt"
 LOG_FILE_EVENT_POST_XLSX = datetime.now().strftime("%Y-%m-%d") + "_event_post_xlsx.txt"
 #LOG_FILE_ORGUNIT_POST = datetime.now().strftime("%Y-%m-%d") + "_organisationUnits_post.txt"
 

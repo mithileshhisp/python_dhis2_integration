@@ -7,22 +7,19 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
-dhis2_username = "******"
-dhis2_password = "******"
+dhis2_username = "*******"
+dhis2_password = "*******"
 
 from constants import LOG_FILE_PROGRAMRULE_ACTION_POST, LOG_FILE_PROGRAMRULE_VARIABLE_ERROR_LOG
 
 # DHIS2 API credentials and URL
 
 
-DHIS2_API_GET_URL = "https://mbdr.mm.dhis2.net/dhis/api/"
-DHIS2_AUTH_GET = ("****", "*****")
-
-
-
-
-DHIS2_API_POST_URL = "https://mbdr.mm.dhis2.net/dhis/api/"
-DHIS2_AUTH_POST = ("*****", "*****")
+DHIS2_API_GET_URL = "https://mbdrtraining.moh.gov.mm/dhis/api/" 
+DHIS2_AUTH_GET = ("*******", "*******") ## sumit_hisp #iSp@1234
+ 
+DHIS2_API_POST_URL =  "https://hmistraining.mm.dhis2.net/train/api/" ### event training
+DHIS2_AUTH_POST = ("*******", "*******")
 
 #https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
@@ -71,7 +68,7 @@ def get_programRuleAction_details(session_get, programRuleAction_uid):
     program_rule_action_get_url = f"{DHIS2_API_GET_URL}programRuleActions/{programRuleAction_uid}.json"
 
     #print(program_rule_get_url)
-    #print( f"program_rule_get_url . { program_rule_get_url }" )
+    #print( f"program_rule_get_url . { program_rule_action_get_url }" )
     #print(f" event_search_url : {event_get_url}" )
     #response = requests.get(event_search_url, auth=HTTPBasicAuth(dhis2_username, dhis2_password))
     response = session_get.get(program_rule_action_get_url)
@@ -95,13 +92,9 @@ def push_programrule_action_in_dhis2(session_post, programRuleAction_payload, pr
         programRuleAction_post_url = f"{DHIS2_API_POST_URL}programRuleActions"
         response = session_post.post(programRuleAction_post_url, data=json.dumps(programRuleAction_payload), headers={"Content-Type": "application/json"})
         response.raise_for_status()
-        #print(f"response post.  {response}")
+        #print(f"response post.  {response.json()}")
         #print('####################################################### SUCCESSFUL ##########################################################', flush=True)
-        #print(f'RECORD NO.: {record_count}   current benID: {row["BeneficiaryRegID"]}', flush=True)
-        imported_programrule_Action_uid = response.json().get("response", {}).get("importSummaries", [])[0].get("reference")
-        #event_ids = [item.get("event") for item in response.json().get("response", {}).get("importSummaries", [])[0].get("importCount",{}).get("imported")]
-        #print(f"Events created successfully. Event IDs: {response.json()}")
-        #event_count = response.json().get("response", {}).get("importSummaries", [])[0].get("importCount",{}).get("imported")
+        
         print(f"programRule Action created successfully. programRuleAction_uid : {programRuleAction_uid} . row : {row}  imported Programrule : {programRuleAction_uid}")
         logging.info(f"programRule Action created successfully. programRuleAction_uid : {programRuleAction_uid} . row : {row} imported Programrule : {programRuleAction_uid}")
     except requests.RequestException as e:
@@ -117,8 +110,8 @@ def push_programrule_action_in_dhis2(session_post, programRuleAction_payload, pr
             fail_record.write(f'\ncurrent programRuleAction_uid: {programRuleAction_uid}. \n Error Message: {resp_msg[ind-1:]}\n')
             fail_record.write("----------------------------------------------------------------------------------------\n")
 
-        print(f" Failed to create programRuleAction_uid. Error: {response.text}")
-        logging.error(f"Failed to create programRuleAction_uid . programRuleAction_uid : {programRuleAction_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
+        print(f" Failed to create programRuleAction_uid. {programRuleAction_uid} Error: {response.text}")
+        logging.error(f"Failed to create programRuleAction_uid : {programRuleAction_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
 
 
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'

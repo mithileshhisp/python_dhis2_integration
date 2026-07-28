@@ -7,20 +7,22 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
-dhis2_username = "*****"
-dhis2_password = "*****"
+dhis2_username = "*******"
+dhis2_password = "******"
 
 from constants import LOG_FILE_PROGRAMRULE_POST, LOG_FILE_PROGRAMRULE_ERROR_LOG
 
 # DHIS2 API credentials and URL
 
 
-DHIS2_API_GET_URL = "https://mbdr.mm.dhis2.net/dhis/api/"
-DHIS2_AUTH_GET = ("****", "*****")
+DHIS2_API_GET_URL = "https://mbdrtraining.moh.gov.mm/dhis/api/" 
+DHIS2_AUTH_GET = ("*******", "******") ## sumit_hisp #iSp@1234
 
+#DHIS2_API_POST_URL = "https://mbdr.mm.dhis2.net/dhis/api/"
+#DHIS2_AUTH_POST = ("*******", "*****")
 
-DHIS2_API_POST_URL = "https://mbdr.mm.dhis2.net/dhis/api/"
-DHIS2_AUTH_POST = ("*****", "*****")
+DHIS2_API_POST_URL =  "https://hmistraining.mm.dhis2.net/train/api/" ### event training
+DHIS2_AUTH_POST = ("*******", "*******")
 
 #https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
@@ -68,7 +70,7 @@ def get_programRule_details(session_get, programrule_uid):
     #event_search_url = f"{event_push_endpoint}?orgUnit={orgUnitID}&ouMode=SELECTED&program={programID}&status=ACTIVE&skipPaging=true&filter={event_search_dataElement_uid}:eq:{BenCallID}"
     program_rule_get_url = f"{DHIS2_API_GET_URL}programRules/{programrule_uid}.json"
 
-    #print(program_rule_get_url)
+    print(program_rule_get_url)
     #print( f"program_rule_get_url . { program_rule_get_url }" )
     #print(f" event_search_url : {event_get_url}" )
     #response = requests.get(event_search_url, auth=HTTPBasicAuth(dhis2_username, dhis2_password))
@@ -94,30 +96,20 @@ def push_programrule_in_dhis2(session_post, programrule_payload, programrule_uid
         programRule_post_url = f"{DHIS2_API_POST_URL}programRules"
         response = session_post.post(programRule_post_url, data=json.dumps(programrule_payload), headers={"Content-Type": "application/json"})
         response.raise_for_status()
-        #print(f"response post.  {response}")
+        #print(f"response post.  {response.json()}")
         #print('####################################################### SUCCESSFUL ##########################################################', flush=True)
-        #print(f'RECORD NO.: {record_count}   current benID: {row["BeneficiaryRegID"]}', flush=True)
-        imported_programrule_uid = response.json().get("response", {}).get("importSummaries", [])[0].get("reference")
-        #event_ids = [item.get("event") for item in response.json().get("response", {}).get("importSummaries", [])[0].get("importCount",{}).get("imported")]
-        #print(f"Events created successfully. Event IDs: {response.json()}")
-        #event_count = response.json().get("response", {}).get("importSummaries", [])[0].get("importCount",{}).get("imported")
-        print(f"ProgramRules created successfully. programrule_uid : {programrule_uid} . row : {row}  imported Programrule : {imported_programrule_uid}")
-        logging.info(f"ProgramRules created successfully. programrule_uid : {programrule_uid} . row : {row} imported Programrule : {imported_programrule_uid}")
+        print(f"ProgramRules created successfully. programrule_uid : {programrule_uid} . row : {row}  imported Programrule : {programrule_uid}")
+        logging.info(f"ProgramRules created successfully. programrule_uid : {programrule_uid} . row : {row} imported Programrule : {programrule_uid}")
     except requests.RequestException as e:
         resp_msg=response.text
         ind=resp_msg.find('conflict')
-        #print(f'####################################################### FAILED #######################################################', flush=True)
-        #print(f'RECORD NO.: {record_count}                    current benID: {row["BeneficiaryRegID"]}', flush=True)
-        #print(f"Failed to create events. Error: {resp_msg[ind-1:]}", flush=True)
-        #print(f"Failed to create events. Error: {response.text}")
-        #logging.error(f"Failed to create events .event_uid : {event_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
-
+        
         with open(LOG_FILE_PROGRAMRULE_ERROR_LOG, 'a') as fail_record:
             fail_record.write(f'\ncurrent programrule_uid: {programrule_uid}. \n Error Message: {resp_msg[ind-1:]}\n')
             fail_record.write("----------------------------------------------------------------------------------------\n")
 
-        print(f" Failed to create ProgramRules. Error: {response.text}")
-        logging.error(f"Failed to create ProgramRules . programrule_uid : {programrule_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
+        print(f" Failed to create ProgramRules. programrule_uid : {programrule_uid}  Error: {response.text}")
+        logging.error(f"Failed to create ProgramRules programrule_uid : {programrule_uid} . row : {row} . Status code: {response.status_code} . error details: {response.json()} .Error: {response.text}")
 
 
 #event_to_event_post_excel_file_path = 'timor_event_to_event_post.xlsx'

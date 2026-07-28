@@ -13,17 +13,21 @@ from constants import LOG_FILE_ORGUNIT_UPDATE
 
 # DHIS2 API credentials and URL
 
-DHIS2_API_GET_URL =  "*******/api/"
-DHIS2_AUTH_GET = ("*****", "*****")
+#DHIS2_API_GET_URL =  "https://data.ippf.org/api/"
+#DHIS2_AUTH_GET = ("*****", "******")
 
+DHIS2_API_GET_URL =  "https://tracker.hivaids.gov.np/save-child-2.27/api/"
+DHIS2_AUTH_GET = ("*******", "*****")
 
-#DHIS2_API_POST_URL =  "*********/api/"
-#DHIS2_AUTH_POST = ("*****", "*****")
+#DHIS2_API_POST_URL =  "https://mbdr.moh.gov.mm/dhis/api/"
+#DHIS2_AUTH_POST = ("*******", "*****")
 
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session_get = requests.Session()
 session_get.auth = DHIS2_AUTH_GET
+
 #session = requests.Session()
 #session.auth = (USERNAME, PASSWORD)
 session_get.headers.update({"Content-Type": "application/json"})
@@ -50,14 +54,14 @@ print( f"OrganisationUnits Meta Attribute value update start . { current_time_st
 logging.info(f"OrganisationUnits Meta Attribute value update start . { current_time_start }")
 
 
-def get_orgunit_details( org_unit_url, session_get,orgunit_uid):
+def get_orgunit_details( org_unit_url, session_get, orgunit_uid):
     
     #https://ln4.hispindia.org/timor_dev/api/events.json?orgUnit=Fn51zf6ifbm&ouMode=SELECTED&program=RUqNUsv6WBp&status=ACTIVE&skipPaging=true&filter=alV2b3AtVLw:eq:897
    
     #https://links.hispindia.org/nepalhmis/api/organisationUnits/cCTQiGkKcTk.json
     #event_search_url = f"{event_push_endpoint}?orgUnit={orgUnitID}&ouMode=SELECTED&program={programID}&status=ACTIVE&skipPaging=true&filter={event_search_dataElement_uid}:eq:{BenCallID}"
     orgunit_get_url = f"{org_unit_url}organisationUnits/{orgunit_uid}.json?fields=*"
-
+    #print(f" orgunit_get_url : {orgunit_get_url}" )
     #print(event_search_url)
     #print(f" orgunit_get_url : {orgunit_get_url}" )
     #response = requests.get(event_search_url, auth=HTTPBasicAuth(dhis2_username, dhis2_password))
@@ -67,6 +71,7 @@ def get_orgunit_details( org_unit_url, session_get,orgunit_uid):
         orgunit_response_data = response.json()
         #print(response)
         #print(orgunit_response_data)
+
         return orgunit_response_data 
     else:
         return []
@@ -75,9 +80,11 @@ def update_orgunit_in_dhis2(session_get, orgUnit_update_payload, orgunit_uid, at
     #
     try:
         orgunit_post_url = f"{DHIS2_API_GET_URL}organisationUnits/{orgunit_uid}"
+        #print(f" orgunit_post_url : {orgunit_post_url}" )
         response = session_get.put(orgunit_post_url, data=json.dumps(orgUnit_update_payload), headers={"Content-Type": "application/json"})
         response.raise_for_status()
-        
+        #print(f" orgunit_post_url : {orgunit_post_url}" )
+
         print(f"Orgunit update successfully for row : {row}, orgunit_uid : {orgunit_uid}, with attribute value : {attribute_value} at hierarchylevel: {orgUnit_update_payload.get('level')}")
         logging.info(f"Orgunit update successfully for row : {row}, orgunit_uid : {orgunit_uid}, with attribute value : {attribute_value} at hierarchylevel: {orgUnit_update_payload.get('level')}")
     except requests.RequestException as e:
@@ -115,7 +122,7 @@ with ThreadPoolExecutor(max_workers=1) as executor:
         attribute_value = orgunitRow["attributeValue"]
 
         orgunit_response_data_source = get_orgunit_details(DHIS2_API_GET_URL, session_get, org_uid )
-
+        #print(f"orgunit_response_data_source : {orgunit_response_data_source}" )
         if orgunit_response_data_source:
             #orgunit_payload = orgunit_response_data
             
@@ -131,7 +138,8 @@ with ThreadPoolExecutor(max_workers=1) as executor:
             ]
 
             updateOrgUnit["attributeValues"] = tempAttributeValues
-             #print(orgUnit_post_payload)
+            #print(f" updateOrgUnit payload : {updateOrgUnit}" )
+            #print(updateOrgUnit)
             executor.submit( update_orgunit_in_dhis2, session_get, updateOrgUnit, org_uid, attribute_value, index+1 )
 
 if import_count == len(orgunit_list) + 1:

@@ -7,21 +7,33 @@ import json
 import logging, datetime
 import pandas as pd
 from requests.auth import HTTPBasicAuth
-
+dhis2_username = "*******"
+dhis2_password = "******"
 
 from constants import LOG_FILE_ENROLLMENT_POST_XLSX, LOG_FILE_ENROLLMENT_ERROR_LOG_XLSX
 
 # DHIS2 API credentials and URL
 
 DHIS2_API_GET_URL = "https://bpr.ippf.org/api/"
-DHIS2_AUTH_GET = ("*****", "******")
+DHIS2_AUTH_GET = ("*******", "*****")
 
+dhis2_username = "******"
+dhis2_password = "******"
 
+#DHIS2_API_POST_URL = "https://hhs.drukhmis.gov.bt/bhutan_hhs/api/"
+#DHIS2_AUTH_POST = ("*******", "******")
 
-DHIS2_API_POST_URL = "https://links.hispindia.org/tlllf_cmhpmis/api/"
-DHIS2_AUTH_POST = ("*****", "*****")
+#DHIS2_API_POST_URL = "https://pmnpis.org.ph/app/api/"
+#DHIS2_AUTH_POST = ("*******", "******")
 
+#DHIS2_API_POST_URL = "https://bpr.ippf.org/api/"
+#DHIS2_AUTH_POST = ("*******", "******")
 
+#DHIS2_API_POST_URL = "https://links.hispindia.org/tlllf_cmhpmis/api/"
+DHIS2_API_POST_URL = "https://lllmis.org/dhis/api/" ## production
+DHIS2_AUTH_POST = ("*******", "******")
+
+#https://tracker.hivaids.gov.np/save-child-2.27/api/sqlViews/P8cFNnfn9UP/data?paging=false
 
 # Create a session object for persistent connection
 session_get = requests.Session()
